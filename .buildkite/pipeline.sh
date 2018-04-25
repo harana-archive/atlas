@@ -10,7 +10,7 @@ steps:
     plugins:
       docker-compose:
         build:
-          - app
+          - atlas
         image-name: ${DOCKER_TAG}
         image-repository: ${DOCKER_IMAGE_REPO}
 

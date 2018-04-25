@@ -12,7 +12,7 @@ ENV   DYNAMODB_REPO                 https://github.com/awslabs/dynamodb-janusgra
                                     <artifactSet><includes><include>com.google.guava:*</include></includes></artifactSet> \
                                     </configuration></execution></executions></plugin></plugins></build></profile>
 
-ENV   ATLAS_HOME	                  /opt/atlas \
+ENV   ATLAS_HOME	            /opt/atlas \
       ATLAS_CLIENT_HEAP	            1024MB
 
 FROM                                maven:3.5.3-jdk-8 AS builder-atlas
