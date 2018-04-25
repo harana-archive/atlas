@@ -4,7 +4,7 @@ ENV   ATLAS_REPO                    https://github.com/apache/atlas
 ENV   ATLAS_TAG                     release-1.0.0-alpha-rc2
 ENV   ATLAS_HOME	                  /opt/atlas
 ENV   ATLAS_CLIENT_HEAP	            1024MB
-ENV   MAVEN_OPTS                    "-Xmx2048m -XX:MaxPermSize=512m -XX:+TieredCompilation -XX:TieredStopAtLevel=1" \
+ENV   MAVEN_OPTS                    "-Xmx2048m -XX:MaxPermSize=512m -XX:+TieredCompilation -XX:TieredStopAtLevel=1"
 
 RUN                                 git clone -b ${ATLAS_TAG} --single-branch --depth 1 ${ATLAS_REPO} atlas && \
                                     cd atlas && \
