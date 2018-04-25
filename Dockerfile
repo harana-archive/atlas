@@ -33,6 +33,8 @@ RUN                                 git clone -b ${DYNAMODB_TAG} --single-branch
 
 FROM                                openjdk:8-jdk-alpine
 
+ENV   ATLAS_HOME	                  /opt/atlas
+
 COPY                                --from=builder-atlas /apache-atlas.tar.gz /apache-atlas.tar.gz
 
 RUN                                 apk --no-cache add tar python bash && \
