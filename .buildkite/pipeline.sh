@@ -8,6 +8,9 @@ steps:
 
   - name: ":docker: Docker Image"
     plugins:
+      ecr#v1.1.3:
+        login: true
+      
       docker-compose:
         build:
           - atlas
