@@ -7,7 +7,6 @@ cat <<YAML
 steps:
 
   - name: ":docker: Build Image"
-    command: ".buildkite/dummy.sh"
     plugins:
       docker-compose:
         build:
