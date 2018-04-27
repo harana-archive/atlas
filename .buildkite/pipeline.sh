@@ -7,7 +7,7 @@ cat <<YAML
 steps:
 
   - name: ":docker: Build Image"
-    command: "dummy.sh"
+    command: ".buildkite/dummy.sh"
     plugins:
       ecr#v1.1.3:
         login: true
