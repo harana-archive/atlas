@@ -7,6 +7,7 @@ cat <<YAML
 steps:
 
   - name: ":docker: Docker Image"
+    command: ""
     plugins:
       ecr#v1.1.3:
         login: true
