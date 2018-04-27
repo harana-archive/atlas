@@ -6,8 +6,8 @@ export DOCKER_TAG=$(echo "${BUILDKITE_BRANCH}-${BUILDKITE_COMMIT:0:8}" | tr '[:u
 cat <<YAML
 steps:
 
-  - name: ":docker: Docker Image"
-    command: ""
+  - name: ":docker: Build Image"
+    command: "dummy.sh"
     plugins:
       ecr#v1.1.3:
         login: true
