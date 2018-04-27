@@ -1,0 +1,8 @@
+steps:
+
+  - name: ":docker: Build Image"
+    plugins:
+      docker-compose#v2.1.0:
+        build: atlas
+        image-name: ${DOCKER_TAG}
+        image-repository: ${DOCKER_IMAGE_REPO}
