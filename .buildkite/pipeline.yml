@@ -6,3 +6,5 @@ steps:
         build: atlas
         image-name: ${DOCKER_TAG}
         image-repository: ${DOCKER_IMAGE_REPO}
+
+  - command: dummy.sh
