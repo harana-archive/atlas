@@ -9,9 +9,6 @@ steps:
   - name: ":docker: Build Image"
     command: ".buildkite/dummy.sh"
     plugins:
-      ecr#v1.1.3:
-        login: true
-      
       docker-compose:
         build:
           - atlas
