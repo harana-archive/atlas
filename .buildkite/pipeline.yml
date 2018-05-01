@@ -1,10 +1,10 @@
 steps:
 
-  - name: ":docker: Build Image"
-    plugins:
-      docker-compose#v2.1.0:
-        build: atlas
-        image-name: ${DOCKER_TAG}
-        image-repository: ${DOCKER_IMAGE_REPO}
+  - name: ":hammer: Build"
+    command: docker build -t ${DOCKER_IMAGE_REPO}
 
-  - command: .buildkite/dummy.sh
+  - name: ":cloud: Publish to ECR"
+    command: docker push ${DOCKER_IMAGE_REPO}
+    plugins:
+      ecr#v1.1.3:
+        login: true

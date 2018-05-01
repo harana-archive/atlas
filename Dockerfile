@@ -39,7 +39,7 @@ COPY                                --from=builder-atlas /apache-atlas.tar.gz /a
 
 RUN                                 apk --no-cache add tar python bash && \
                                     mkdir -p ${ATLAS_HOME} && \
-                                    tar xvz -C ${ATLAS_HOME} -f /apache-atlas.tar.gz --strip-component=1 && \
+                                    tar xz -C ${ATLAS_HOME} -f /apache-atlas.tar.gz --strip-component=1 && \
                                     rm -rf /apache-atlas.tar.gz && \
                                     mkdir -p ${ATLAS_HOME}/libext
 
