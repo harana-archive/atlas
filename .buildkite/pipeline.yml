@@ -4,9 +4,6 @@ steps:
     command: docker build . -t ${DOCKER_IMAGE_REPO}
 
   - name: ":cloud: Publish to ECR"
-    command: docker push ${DOCKER_IMAGE_REPO}
-    plugins:
-      ecr#v1.1.3:
-        login: true
-        no-include-email: true
-        region: ap-southeast-2
+    command: > 
+     $(aws ecr get-login --no-include-email --region ap-southeast-2) && 
+     docker push ${DOCKER_IMAGE_REPO}
