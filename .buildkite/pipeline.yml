@@ -1,9 +1,29 @@
 steps:
 
-  - name: ":hammer: Build"
-    command: docker build . -t ${DOCKER_IMAGE_REPO}
+  - name: ":maven: Build Atlas"
+    env:
+      MAVEN_OPTS: "-Xmx2048m -XX:MaxPermSize=512m -XX:+TieredCompilation -XX:TieredStopAtLevel=1"
+    command: >
+      git clone -b ${ATLAS_TAG} --single-branch --depth 1 https://github.com/apache/atlas atlas &&
+      cd atlas &&
+      mvn clean package -Pdist -DskipTests -Dmaven.artifact.threads=20 &&
+      buildkite-agent artifact upload distro/target/apache-atlas-*-bin.tar.gz
 
-  - name: ":cloud: Publish to ECR"
-    command: > 
-     $(aws ecr get-login --no-include-email --region ap-southeast-2) && 
-     docker push ${DOCKER_IMAGE_REPO}
+  - name: ":maven: Build DynamoDB"
+    env:
+      SHADE_PLUGIN: <profile><id>shade</id><build><plugins> \
+      <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-shade-plugin</artifactId> \
+      <version>3.1.0</version><executions><execution><phase>package</phase><goals><goal>shade</goal></goals> \
+      <configuration><relocations><relocation><pattern>com.google</pattern> \
+      <shadedPattern>com.shaded.google</shadedPattern></relocation></relocations> \
+      <artifactSet><includes><include>com.google.guava:*</include></includes></artifactSet> \
+      </configuration></execution></executions></plugin></plugins></build></profile>
+    command: >
+      git clone -b ${DYNAMODB_TAG} --single-branch --depth 1 https://github.com/awslabs/dynamodb-janusgraph-storage-backend dynamodb-janusgraph &&
+      cd dynamodb-janusgraph &&
+      sed -i -e "s#<profiles>#<profiles>${SHADE_PLUGIN}#" pom.xml &&
+      mvn clean package -Pshade -DskipTests -Dmaven.artifact.threads=20 &&
+      buildkite-agent artifact upload target/dynamodb-janusgraph-storage-backend*.jar &&
+      rm target/dependencies/guava*.jar &&
+      tar vcfz dynamodb-janusgraph-deps.tgz target/dependencies/*.jar &&
+      buildkite-agent artifact upload dynamodb-janusgraph-deps.tgz
