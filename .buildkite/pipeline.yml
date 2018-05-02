@@ -11,13 +11,14 @@ steps:
 
   - name: ":maven: Build DynamoDB"
     env:
-      SHADE_PLUGIN: <profile><id>shade</id><build><plugins> \
-      <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-shade-plugin</artifactId> \
-      <version>3.1.0</version><executions><execution><phase>package</phase><goals><goal>shade</goal></goals> \
-      <configuration><relocations><relocation><pattern>com.google</pattern> \
-      <shadedPattern>com.shaded.google</shadedPattern></relocation></relocations> \
-      <artifactSet><includes><include>com.google.guava:*</include></includes></artifactSet> \
-      </configuration></execution></executions></plugin></plugins></build></profile>
+      SHADE_PLUGIN: >
+        <profile><id>shade</id><build><plugins>
+        <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-shade-plugin</artifactId>
+        <version>3.1.0</version><executions><execution><phase>package</phase><goals><goal>shade</goal></goals>
+        <configuration><relocations><relocation><pattern>com.google</pattern>
+        <shadedPattern>com.shaded.google</shadedPattern></relocation></relocations>
+        <artifactSet><includes><include>com.google.guava:*</include></includes></artifactSet>
+        </configuration></execution></executions></plugin></plugins></build></profile>
     command: >
       git clone -b ${DYNAMODB_TAG} --single-branch --depth 1 https://github.com/awslabs/dynamodb-janusgraph-storage-backend dynamodb-janusgraph &&
       cd dynamodb-janusgraph &&
