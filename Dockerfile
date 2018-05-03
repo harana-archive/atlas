@@ -25,8 +25,6 @@ RUN                                 mkdir -p /opt/atlas/libext && tar xz -C /opt
                                     rm -rf /dynamodb-janusgraph-deps.tgz && \
                                     mv /dynamodb-janusgraph-storage-backend.jar /opt/atlas/libext
 
-RUN                                 ls -al / && ls -al /opt/atlas/libext
-
 EXPOSE                              21000
 
 CMD                                 ["/bin/bash", "-c", "/opt/atlas/bin/atlas_start.py; tail -fF /opt/atlas/logs/application.log"]

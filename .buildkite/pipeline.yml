@@ -42,8 +42,5 @@ steps:
 
   - name: ":docker: Push Image"
     command: >
-      buildkite-agent artifact download apache-atlas-*-bin.tar.gz . &&
-      buildkite-agent artifact download dynamodb-janusgraph-deps.tgz . &&
-      buildkite-agent artifact download dynamodb-janusgraph-storage-backend*.jar . &&
       $(aws ecr get-login --no-include-email --region ap-southeast-2) &&
       docker push ${DOCKER_IMAGE_REPO}
