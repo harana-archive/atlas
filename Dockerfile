@@ -23,6 +23,7 @@ RUN                                 mkdir -p /opt/atlas && tar xz -C /opt/atlas 
 
 RUN                                 mkdir -p /opt/atlas/libext && tar xz -C /opt/atlas/libext -f /dynamodb-janusgraph-deps.tgz && \
                                     rm -rf /dynamodb-janusgraph-deps.tgz && \
+                                    mv /opt/atlas/libext/target/* /opt/atlas/libext && rm -fr /opt/atlas/libext/target \
                                     mv /dynamodb-janusgraph-storage-backend.jar /opt/atlas/libext
 
 RUN                                 ls -al / && ls -al /opt/atlas/libext
