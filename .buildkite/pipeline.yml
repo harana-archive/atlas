@@ -4,11 +4,12 @@ steps:
     env:
       MAVEN_OPTS: "-Xmx2048m -XX:MaxPermSize=512m -XX:+TieredCompilation -XX:TieredStopAtLevel=1"
     command: >
-      rm -fr atlas &&
+      cd ${BUILDKITE_BUILD_CHECKOUT_PATH} && rm -fr atlas &&
       git clone -b ${ATLAS_TAG} --single-branch --depth 1 https://github.com/apache/atlas atlas &&
       cd atlas &&
       mvn clean package -Pdist -DskipTests -Dmaven.artifact.threads=20 &&
-      mv distro/target/apache-atlas-*-bin.tar.gz ${BUILDKITE_BUILD_CHECKOUT_PATH}
+      mv distro/target/apache-atlas-*-bin.tar.gz ${BUILDKITE_BUILD_CHECKOUT_PATH} &&
+      ls -al ${BUILDKITE_BUILD_CHECKOUT_PATH}
 
   - name: ":maven: Build DynamoDB"
     env:
@@ -21,7 +22,7 @@ steps:
         <artifactSet><includes><include>com.google.guava:*</include></includes></artifactSet>
         </configuration></execution></executions></plugin></plugins></build></profile>
     command: >
-      rm -fr dynamodb-janusgraph &&
+      cd ${BUILDKITE_BUILD_CHECKOUT_PATH} && rm -fr dynamodb-janusgraph &&
       git clone -b ${DYNAMODB_TAG} --single-branch --depth 1 https://github.com/awslabs/dynamodb-janusgraph-storage-backend dynamodb-janusgraph &&
       cd dynamodb-janusgraph &&
       sed -i -e "s#<profiles>#<profiles>${SHADE_PLUGIN}#" pom.xml &&
