@@ -29,8 +29,8 @@ steps:
       mvn clean package -Pshade -DskipTests -Dmaven.artifact.threads=20 &&
       cd target && mv dynamodb-janusgraph-storage-backend*.jar dynamodb-janusgraph-storage-backend.jar &&
       buildkite-agent artifact upload dynamodb-janusgraph-storage-backend*.jar &&
-      rm dependencies/guava*.jar && cd .. &&
-      tar vcfz dynamodb-janusgraph-deps.tgz target/dependencies/*.jar &&
+      cd dependencies && rm guava*.jar &&
+      tar vcfz ../dynamodb-janusgraph-deps.tgz *.jar && cd .. &&
       buildkite-agent artifact upload dynamodb-janusgraph-deps.tgz
 
   - name: ":docker: Build Image"
