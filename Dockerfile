@@ -15,14 +15,14 @@ ENV   ATLAS_HOME                    /opt/atlas \
       DYNAMODB_GI_READ_RATE         2 \
       DYNAMODB_GI_WRITE_RATE        2
 
-COPY                                /atlas.tgz /atlas.tgz \
-                                    /dynamodb-janusgraph-deps.tgz /dynamodb-janusgraph-deps.tgz \
-                                    /dynamodb-janusgraph-storage-backend.jar /dynamodb-janusgraph-storage-backend.jar
+COPY                                /atlas.tgz /atlas.tgz
+COPY                                /dynamodb-janusgraph-deps.tgz /dynamodb-janusgraph-deps.tgz
+COPY                                /dynamodb-janusgraph-storage-backend.jar /dynamodb-janusgraph-storage-backend.jar
 
 RUN                                 tar xz -C ${ATLAS_HOME} -f /atlas.tgz && \
                                     rm -rf /atlas.tgz
 
-RUN                                 tar xz -C ${ATLAS_HOME}/libext -f /dynamodb-janusgraph-deps.tgz --strip-component=1 && \
+RUN                                 tar xz -C ${ATLAS_HOME}/libext -f /dynamodb-janusgraph-deps.tgz && \
                                     rm -rf /dynamodb-janusgraph-deps.tgz && \
                                     mv /dynamodb-janusgraph-storage-backend.jar ${ATLAS_HOME}/libext
 
