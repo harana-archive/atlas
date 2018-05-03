@@ -27,7 +27,7 @@ steps:
       sed -i -e "s#<profiles>#<profiles>${SHADE_PLUGIN}#" pom.xml &&
       mvn clean package -Pshade -DskipTests -Dmaven.artifact.threads=20 &&
       cd target && buildkite-agent artifact upload dynamodb-janusgraph-storage-backend*.jar &&
-      rm target/dependencies/guava*.jar &&
+      rm dependencies/guava*.jar && cd .. &&
       tar vcfz dynamodb-janusgraph-deps.tgz target/dependencies/*.jar &&
       buildkite-agent artifact upload dynamodb-janusgraph-deps.tgz
 
