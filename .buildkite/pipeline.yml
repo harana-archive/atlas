@@ -8,7 +8,8 @@ steps:
       git clone -b ${ATLAS_TAG} --single-branch --depth 1 https://github.com/apache/atlas atlas &&
       cd atlas &&
       mvn clean package -Pdist -DskipTests -Dmaven.artifact.threads=20 &&
-      cd distro/target && buildkite-agent artifact upload apache-atlas-*-bin.tar.gz
+      cd distro/target && mv apache-atlas-*-bin.tar.gz atlas.tgz &&
+      buildkite-agent artifact upload atlas.tgz
 
   - name: ":maven: Build DynamoDB"
     env:
@@ -26,14 +27,23 @@ steps:
       cd dynamodb-janusgraph &&
       sed -i -e "s#<profiles>#<profiles>${SHADE_PLUGIN}#" pom.xml &&
       mvn clean package -Pshade -DskipTests -Dmaven.artifact.threads=20 &&
-      cd target && buildkite-agent artifact upload dynamodb-janusgraph-storage-backend*.jar &&
+      cd target && mv dynamodb-janusgraph-storage-backend*.jar dynamodb-janusgraph-storage-backend.jar &&
+      buildkite-agent artifact upload dynamodb-janusgraph-storage-backend*.jar &&
       rm dependencies/guava*.jar && cd .. &&
       tar vcfz dynamodb-janusgraph-deps.tgz target/dependencies/*.jar &&
       buildkite-agent artifact upload dynamodb-janusgraph-deps.tgz
 
   - name: ":docker: Build Image"
     command: >
+      buildkite-agent artifact download atlas.tgz . &&
+      buildkite-agent artifact download dynamodb-janusgraph-deps.tgz . &&
+      buildkite-agent artifact download dynamodb-janusgraph-storage-backend.jar . &&
+      docker build . -t ${DOCKER_IMAGE_REPO}
+
+  - name: ":docker: Push Image"
+    command: >
       buildkite-agent artifact download apache-atlas-*-bin.tar.gz . &&
       buildkite-agent artifact download dynamodb-janusgraph-deps.tgz . &&
       buildkite-agent artifact download dynamodb-janusgraph-storage-backend*.jar . &&
-      ls -al
+      $(aws ecr get-login --no-include-email --region ap-southeast-2) &&
+      docker push ${DOCKER_IMAGE_REPO}
