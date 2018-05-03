@@ -24,7 +24,7 @@ RUN                                 mkdir -p ${ATLAS_HOME} && \
                                     tar xz -C ${ATLAS_HOME} -f /atlas.tgz --strip-component=1 && \
                                     rm -rf /atlas.tgz
 
-RUN                                 mkdir -p ${ATLAS_HOME}/libext &&
+RUN                                 mkdir -p ${ATLAS_HOME}/libext && \
                                     tar xz -C ${ATLAS_HOME}/libext -f /dynamodb-janusgraph-deps.tgz --strip-component=1 && \
                                     rm -rf /dynamodb-janusgraph-deps.tgz && \
                                     mv /dynamodb-janusgraph-storage-backend.jar ${ATLAS_HOME}/libext
