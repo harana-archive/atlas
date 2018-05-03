@@ -33,7 +33,7 @@ steps:
 
   - name: ":docker: Build Image"
     command: >
-      buildkite-agent artifact download apache-atlas-*-bin.tar.gz
-      buildkite-agent artifact download dynamodb-janusgraph-deps.tgz
-      buildkite-agent artifact download dynamodb-janusgraph-storage-backend*.jar
+      buildkite-agent artifact download apache-atlas-*-bin.tar.gz . &&
+      buildkite-agent artifact download dynamodb-janusgraph-deps.tgz . &&
+      buildkite-agent artifact download dynamodb-janusgraph-storage-backend*.jar . &&
       ls -al .
