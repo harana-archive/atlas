@@ -7,7 +7,7 @@ steps:
       git clone -b ${ATLAS_TAG} --single-branch --depth 1 https://github.com/apache/atlas atlas &&
       cd atlas &&
       mvn clean package -Pdist -DskipTests -Dmaven.artifact.threads=20 &&
-      buildkite-agent artifact upload distro/target/apache-atlas-*-bin.tar.gz
+      mv distro/target/apache-atlas-*-bin.tar.gz ${BUILDKITE_BUILD_CHECKOUT_PATH}
 
   - name: ":maven: Build DynamoDB"
     env:
@@ -24,7 +24,7 @@ steps:
       cd dynamodb-janusgraph &&
       sed -i -e "s#<profiles>#<profiles>${SHADE_PLUGIN}#" pom.xml &&
       mvn clean package -Pshade -DskipTests -Dmaven.artifact.threads=20 &&
-      buildkite-agent artifact upload target/dynamodb-janusgraph-storage-backend*.jar &&
+      mv target/dynamodb-janusgraph-storage-backend*.jar ${BUILDKITE_BUILD_CHECKOUT_PATH} &&
       rm target/dependencies/guava*.jar &&
-      tar vcfz dynamodb-janusgraph-deps.tgz target/dependencies/*.jar &&
-      buildkite-agent artifact upload dynamodb-janusgraph-deps.tgz
+      tar vcfz ${BUILDKITE_BUILD_CHECKOUT_PATH}/dynamodb-janusgraph-deps.tgz target/dependencies/*.jar &&
+      ls -al ${BUILDKITE_BUILD_CHECKOUT_PATH}
