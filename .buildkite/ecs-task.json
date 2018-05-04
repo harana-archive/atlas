@@ -1,0 +1,35 @@
+{
+  "containerDefinitions": [
+    {
+      "name": "buildkite",
+      "image": "agent:latest",
+      "memory": "256",
+      "cpu": "256",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "protocol": "tcp"
+        }
+      ],
+      "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+              "awslogs-group": "awslogs-nginx-ecs",
+              "awslogs-region": "us-east-1",
+              "awslogs-stream-prefix": "nginx"
+          }
+      },
+      "environment": [
+        {
+          "name": "BUILDKITE_AGENT_TOKEN",
+          "value": "6a7e0e2e32b203318cdee17e381bbedc491622bab7467c4351"
+        }
+      ]
+    }
+  ],
+  "volumes": [],
+  "networkMode": "bridge",
+  "placementConstraints": [],
+  "family": "buildkite-agent"
+}
