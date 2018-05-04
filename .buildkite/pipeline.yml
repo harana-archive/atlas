@@ -33,12 +33,16 @@ steps:
       tar vcfz ../dynamodb-janusgraph-deps.tgz *.jar && cd .. &&
       buildkite-agent artifact upload dynamodb-janusgraph-deps.tgz
 
+  - wait
+
   - name: ":docker: Build Image"
     command: >
       buildkite-agent artifact download atlas.tgz . &&
       buildkite-agent artifact download dynamodb-janusgraph-deps.tgz . &&
       buildkite-agent artifact download dynamodb-janusgraph-storage-backend.jar . &&
       docker build . -t ${DOCKER_IMAGE_REPO}
+
+  - wait
 
   - name: ":docker: Push Image"
     command: >
