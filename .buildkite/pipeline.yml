@@ -43,14 +43,14 @@ steps:
       JACKSON_VERSION: "2.9.6"
     command: >
       mkdir log4j-temp && cd log4j-temp
-      curl "http://search.maven.org/remotecontent?filepath=org/appenders/log4j/log4j2-elasticsearch5-bulkprocessor/${LOG4J_ES_APPENDER_VERSION}/log4j2-elasticsearch5-bulkprocessor-${LOG4J_ES_APPENDER_VERSION}.jar" -o log4j2-elasticsearch5-bulkprocessor-${LOG4J_ES_APPENDER_VERSION}.jar
-      curl "http://search.maven.org/remotecontent?filepath=com/fasterxml/jackson/core/jackson-databind/${JACKSON_VERSION}/jackson-annotations-${JACKSON_VERSION}.jar" -o jackson-annotations-${JACKSON_VERSION}.jar
-      curl "http://search.maven.org/remotecontent?filepath=com/fasterxml/jackson/core/jackson-databind/${JACKSON_VERSION}/jackson-core-${JACKSON_VERSION}.jar" -o jackson-core-${JACKSON_VERSION}.jar
-      curl "http://search.maven.org/remotecontent?filepath=com/fasterxml/jackson/core/jackson-databind/${JACKSON_VERSION}/jackson-databind-${JACKSON_VERSION}.jar" -o jackson-databind-${JACKSON_VERSION}.jar
-      curl "http://search.maven.org/remotecontent?filepath=org/apache/logging/log4j/log4j-api/${LOG4J_VERSION}/log4j-api-${LOG4J_VERSION}.jar" -o log4j-api-${LOG4J_VERSION}.jar
-      curl "http://search.maven.org/remotecontent?filepath=org/apache/logging/log4j/log4j-core/${LOG4J_VERSION}/log4j-core-${LOG4J_VERSION}.jar" -o log4j-core-${LOG4J_VERSION}.jar
-      curl "http://search.maven.org/remotecontent?filepath=com/lmax/disruptor/${DISRUPTOR_VERSION}/disruptor-${DISRUPTOR_VERSION}.jar" -o disruptor-${DISRUPTOR_VERSION}.jar     
-      tar vcfz ../log4j-es-appender-deps.tgz *.jar && cd .. && rm -fr log4j-temp
+      curl "http://search.maven.org/remotecontent?filepath=org/appenders/log4j/log4j2-elasticsearch5-bulkprocessor/${LOG4J_ES_APPENDER_VERSION}/log4j2-elasticsearch5-bulkprocessor-${LOG4J_ES_APPENDER_VERSION}.jar" -o log4j2-elasticsearch5-bulkprocessor-${LOG4J_ES_APPENDER_VERSION}.jar &&
+      curl "http://search.maven.org/remotecontent?filepath=com/fasterxml/jackson/core/jackson-databind/${JACKSON_VERSION}/jackson-annotations-${JACKSON_VERSION}.jar" -o jackson-annotations-${JACKSON_VERSION}.jar &&
+      curl "http://search.maven.org/remotecontent?filepath=com/fasterxml/jackson/core/jackson-databind/${JACKSON_VERSION}/jackson-core-${JACKSON_VERSION}.jar" -o jackson-core-${JACKSON_VERSION}.jar &&
+      curl "http://search.maven.org/remotecontent?filepath=com/fasterxml/jackson/core/jackson-databind/${JACKSON_VERSION}/jackson-databind-${JACKSON_VERSION}.jar" -o jackson-databind-${JACKSON_VERSION}.jar &&
+      curl "http://search.maven.org/remotecontent?filepath=org/apache/logging/log4j/log4j-api/${LOG4J_VERSION}/log4j-api-${LOG4J_VERSION}.jar" -o log4j-api-${LOG4J_VERSION}.jar &&
+      curl "http://search.maven.org/remotecontent?filepath=org/apache/logging/log4j/log4j-core/${LOG4J_VERSION}/log4j-core-${LOG4J_VERSION}.jar" -o log4j-core-${LOG4J_VERSION}.jar &&
+      curl "http://search.maven.org/remotecontent?filepath=com/lmax/disruptor/${DISRUPTOR_VERSION}/disruptor-${DISRUPTOR_VERSION}.jar" -o disruptor-${DISRUPTOR_VERSION}.jar &&
+      tar vcfz ../log4j-es-appender-deps.tgz *.jar && cd .. && rm -fr log4j-temp &&
       buildkite-agent artifact upload log4j-es-appender-deps.tgz
 
   - name: ":docker: Build Image"
