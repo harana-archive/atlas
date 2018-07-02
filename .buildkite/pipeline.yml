@@ -58,12 +58,12 @@ steps:
       buildkite-agent artifact download atlas.tgz . &&
       buildkite-agent artifact download dynamodb-janusgraph-deps.tgz . &&
       buildkite-agent artifact download dynamodb-janusgraph-storage-backend.jar . &&
-      buildkite-agent artifact download log4j-es-appender-deps.tgz &&
-     
-      aws s3 cp atlas.tgz s3://deploy-buildkite-cache/atlas.tgz
-      aws s3 cp dynamodb-janusgraph-deps.tgz s3://deploy-buildkite-cache/dynamodb-janusgraph-deps.tgz
-      aws s3 cp dynamodb-janusgraph-storage-backend.jar s3://deploy-buildkite-cache/dynamodb-janusgraph-storage-backend.jar
-      aws s3 cp log4j-es-appender-deps.tgz s3://deploy-buildkite-cache/log4j-es-appender-deps.tgz     
+      buildkite-agent artifact download log4j-es-appender-deps.tgz . &&
+
+      aws s3 cp atlas.tgz s3://deploy-buildkite-cache/atlas.tgz &&
+      aws s3 cp dynamodb-janusgraph-deps.tgz s3://deploy-buildkite-cache/dynamodb-janusgraph-deps.tgz &&
+      aws s3 cp dynamodb-janusgraph-storage-backend.jar s3://deploy-buildkite-cache/dynamodb-janusgraph-storage-backend.jar &&
+      aws s3 cp log4j-es-appender-deps.tgz s3://deploy-buildkite-cache/log4j-es-appender-deps.tgz &&
      
       docker build . -t ${DOCKER_IMAGE_REPO}
 
