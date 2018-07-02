@@ -35,11 +35,36 @@ steps:
 
   - wait
 
+  - name: ":maven: Package Log4J-ElasticSearch"
+    env:
+      LOG4J_ES_APPENDER_VERSION: "1.1.1"
+      LOG4J_VERSION: "2.11.0"
+      DISRUPTOR_VERSION: "3.4.2"
+      JACKSON_VERSION: "2.9.6"
+    command: >
+      mkdir log4j-temp && cd log4j-temp
+      curl "http://search.maven.org/remotecontent?filepath=org/appenders/log4j/log4j2-elasticsearch5-bulkprocessor/${LOG4J_ES_APPENDER_VERSION}/log4j2-elasticsearch5-bulkprocessor-${LOG4J_ES_APPENDER_VERSION}.jar" -o log4j2-elasticsearch5-bulkprocessor-${LOG4J_ES_APPENDER_VERSION}.jar
+      curl "http://search.maven.org/remotecontent?filepath=com/fasterxml/jackson/core/jackson-databind/${JACKSON_VERSION}/jackson-annotations-${JACKSON_VERSION}.jar" -o jackson-annotations-${JACKSON_VERSION}.jar
+      curl "http://search.maven.org/remotecontent?filepath=com/fasterxml/jackson/core/jackson-databind/${JACKSON_VERSION}/jackson-core-${JACKSON_VERSION}.jar" -o jackson-core-${JACKSON_VERSION}.jar
+      curl "http://search.maven.org/remotecontent?filepath=com/fasterxml/jackson/core/jackson-databind/${JACKSON_VERSION}/jackson-databind-${JACKSON_VERSION}.jar" -o jackson-databind-${JACKSON_VERSION}.jar
+      curl "http://search.maven.org/remotecontent?filepath=org/apache/logging/log4j/log4j-api/${LOG4J_VERSION}/log4j-api-${LOG4J_VERSION}.jar" -o log4j-api-${LOG4J_VERSION}.jar
+      curl "http://search.maven.org/remotecontent?filepath=org/apache/logging/log4j/log4j-core/${LOG4J_VERSION}/log4j-core-${LOG4J_VERSION}.jar" -o log4j-core-${LOG4J_VERSION}.jar
+      curl "http://search.maven.org/remotecontent?filepath=com/lmax/disruptor/${DISRUPTOR_VERSION}/disruptor-${DISRUPTOR_VERSION}.jar" -o disruptor-${DISRUPTOR_VERSION}.jar     
+      tar vcfz ../log4j-es-appender-deps.tgz *.jar && cd .. && rm -fr log4j-temp
+      buildkite-agent artifact upload log4j-es-appender-deps.tgz
+
   - name: ":docker: Build Image"
     command: >
       buildkite-agent artifact download atlas.tgz . &&
       buildkite-agent artifact download dynamodb-janusgraph-deps.tgz . &&
       buildkite-agent artifact download dynamodb-janusgraph-storage-backend.jar . &&
+      buildkite-agent artifact download log4j-es-appender-deps.tgz &&
+     
+      aws s3 cp atlas.tgz s3://deploy-buildkite-cache/atlas.tgz
+      aws s3 cp dynamodb-janusgraph-deps.tgz s3://deploy-buildkite-cache/dynamodb-janusgraph-deps.tgz
+      aws s3 cp dynamodb-janusgraph-storage-backend.jar s3://deploy-buildkite-cache/dynamodb-janusgraph-storage-backend.jar
+      aws s3 cp log4j-es-appender-deps.tgz s3://deploy-buildkite-cache/log4j-es-appender-deps.tgz     
+     
       docker build . -t ${DOCKER_IMAGE_REPO}
 
   - wait
